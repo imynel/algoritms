@@ -1,4 +1,4 @@
-.container {
+.form {
     display: flex;
     justify-content: center;
 }
@@ -6,4 +6,16 @@
 .input {
     max-width: 380px;
     margin-right: 12px;
+}
+
+.container {
+    display: flex;
+    gap: 16px;
+    margin: 48px 148px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.circle {
+    margin-bottom: 48px;
 }
