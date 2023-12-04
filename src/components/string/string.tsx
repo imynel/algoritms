@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import style from './string.module.css'
 import { Input } from "../ui/input/input";
@@ -11,19 +11,39 @@ export const StringComponent: React.FC = () => {
   const [value, setValue] = useState('')
   const [arrString, setArrString] = useState<string[]>([])
 
+  useEffect(() => {
+    
+  }, [arrString])
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
   }
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    getString(value)
+    setArrString(await sortArr(value.split('')))
+  }
+    
   }
 
-  const getString = (str: string) => {
-    const arr = str.split('') // ЗАМЕНИТЬ
-    setArrString(arr)
+  const sortArr = async (arr: string[], start = 0, end = arr.length - 1) => {
+    console.log(arr, start, end)
+    for(let i = 0; i < arr.length; i++) {
+      if (start > end) continue
+      swap(arr, start, end)
+      start++
+      end--
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(arr, start, end)
+    }
+
+    return arr
   }
+
+  const swap = (arr: string[], firstIndex: number, secondIndex: number): void => {
+    const temp = arr[firstIndex];
+    arr[firstIndex] = arr[secondIndex];
+    arr[secondIndex] = temp;
+  };
 
   // const color: TColor = true ?  '#D252E1' : '#7FE051'
 
