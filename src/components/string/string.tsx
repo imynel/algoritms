@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import style from './string.module.css'
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from '../ui/circle/circle'
+import { DELAY_IN_MS, delay } from "../../constants/delays";
 
 type TColor = '#D252E1' | '#7FE051'
 
@@ -11,32 +12,31 @@ export const StringComponent: React.FC = () => {
   const [value, setValue] = useState('')
   const [arrString, setArrString] = useState<string[]>([])
 
-  useEffect(() => {
-    
-  }, [arrString])
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
   }
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setArrString(await sortArr(value.split('')))
+    sortArr(value.split(''))
   }
     
-  }
 
-  const sortArr = async (arr: string[], start = 0, end = arr.length - 1) => {
-    console.log(arr, start, end)
+  const sortArr = async (arr: string[], start = 0, end = arr.length - 1): Promise<void> => {
+    
     for(let i = 0; i < arr.length; i++) {
+      setArrString([...arr])
+      await delay(DELAY_IN_MS);
       if (start > end) continue
+      console.log(arr, start, end)
       swap(arr, start, end)
       start++
       end--
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(arr, start, end)
+      
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    return arr
+    // setArrString(arr)
   }
 
   const swap = (arr: string[], firstIndex: number, secondIndex: number): void => {
