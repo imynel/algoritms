@@ -6,9 +6,15 @@ import { Button } from "../ui/button/button";
 import { Input } from "../ui/input/input";
 import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 import { Circle } from "../ui/circle/circle";
+import { ElementStates } from "../../types/element-states";
+
+type TLetter = {
+  value: string;
+  state: ElementStates;
+}
 
 export const QueuePage: React.FC = () => {
-  const [arrResult, setArrResult] = useState<string[]>([])
+  const [arrResult, setArrResult] = useState<TLetter[]>([])
   const [value, setValue] = useState('')
   const [queue, setQueue] = useState<Queue>(new Queue());
    
@@ -22,18 +28,25 @@ export const QueuePage: React.FC = () => {
 
   const deletArray = async () => {
     queue.clear()
-    await delay(SHORT_DELAY_IN_MS)
     setArrResult([...queue.getArray()])
   }
 
   const addValue = async () => {
-    queue.enqueue(value)
+    queue.enqueue({value: value, state: ElementStates.Changing})
     setValue('')
-    await delay(SHORT_DELAY_IN_MS)
     setArrResult([...queue.getArray()])
+    await delay(SHORT_DELAY_IN_MS)
+
+    queue.getArray()[queue.tail - 1].state = ElementStates.Default;
+    setArrResult([...queue.getArray()]);
+    await delay(SHORT_DELAY_IN_MS)
   }
 
   const deleteValue = async () => {
+    queue.getArray()[queue.head].state = ElementStates.Changing;
+    setArrResult([...queue.getArray()]);
+    await delay(SHORT_DELAY_IN_MS)
+
     queue.dequeue()
     await delay(SHORT_DELAY_IN_MS)
     setArrResult([...queue.getArray()])
@@ -50,7 +63,7 @@ export const QueuePage: React.FC = () => {
       <div className={style.container}>
         {arrResult.map((elm, index) => {
           return (
-            <Circle index={index} head={index === queue.head && queue.getArray()[queue.head] ? 'head' : null} tail={index === queue.tail - 1 ? 'tail' : null} letter={elm} key={index}/>
+            <Circle index={index} head={index === queue.head && queue.getArray()[queue.head] ? 'head' : null} tail={index === queue.tail - 1 ? 'tail' : null} letter={elm.value} key={index} state={elm.state} />
           )
         })}
       </div>

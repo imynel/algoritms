@@ -6,14 +6,20 @@ import { Input } from "../ui/input/input";
 import { Stack } from "./stack-page-class";
 import { Circle } from "../ui/circle/circle";
 import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
+
+type TLetter = {
+  value: string;
+  state: ElementStates;
+}
+
 
 export const StackPage: React.FC = () => {
   const [value, setValue] = useState('')
-  const [arrResult, setArrResult] = useState<string[]>([])
-  const [stack, setStack] = useState<Stack<string>>(new Stack());
+  const [arrResult, setArrResult] = useState<TLetter[]>([])
+  const [stack] = useState<Stack<TLetter>>(new Stack());
 
   useEffect(() => {
-    console.log(arrResult.length)
     return () => {
       stack.clear()
       setArrResult([])
@@ -26,18 +32,25 @@ export const StackPage: React.FC = () => {
 
   const deletArray = async () => {
     stack.clear()
-    await delay(SHORT_DELAY_IN_MS)
     setArrResult([...stack.getArray()])
   }
 
   const addValue = async () => {
-    stack.push(value)
-    await delay(SHORT_DELAY_IN_MS)
+    stack.push({value: value, state: ElementStates.Changing})
+    
     setArrResult([...stack.getArray()])
+    await delay(SHORT_DELAY_IN_MS)
     setValue('')
+
+    stack.getArray()[stack.getSize() - 1].state = ElementStates.Default;
+    setArrResult([...stack.getArray()]);
+    await delay(SHORT_DELAY_IN_MS)
+    
   }
 
   const deleteValue = async () => {
+    stack.getArray()[stack.getSize() - 1].state = ElementStates.Changing;
+    setArrResult([...stack.getArray()])
     stack.pop()
     await delay(SHORT_DELAY_IN_MS)
     setArrResult([...stack.getArray()])
@@ -54,7 +67,7 @@ export const StackPage: React.FC = () => {
       <div className={style.container}>
         {arrResult.map((elm, index) => {
           return (
-            <Circle letter={String(elm)} key={index} index={index} head={index === stack.getSize() - 1 ? 'top' : null}/>
+            <Circle letter={elm.value} key={index} index={index} head={index === stack.getSize() - 1 ? 'top' : null} state={elm.state} />
           )
         })}
       </div>

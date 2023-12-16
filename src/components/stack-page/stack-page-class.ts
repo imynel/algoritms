@@ -1,11 +1,18 @@
+import { ElementStates } from "../../types/element-states";
+
+type TLetter = {
+  value: string;
+  state: ElementStates;
+}
+
 export class Stack<T> {
 
-    private arrResult: string[] = []
+    private arrResult: TLetter[] = []
     constructor() {
         this.arrResult = []
     }
 
-    push(item: string) {
+    push(item: TLetter) {
         this.arrResult.push(item)
         console.log(this.arrResult)
     }

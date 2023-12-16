@@ -1,35 +1,43 @@
-.form1 {
+.form1{
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    justify-content: start;
+    gap: 30px;
+    margin-left: 300px;
+  }
+  
+.form2{
+display: flex;
+justify-content: start;
+gap: 30px;
+margin-top: 30px;
+margin-left: 300px;
+}
+  
+.container {
+max-width: 1040px;
+align-items: center;
+margin: auto;
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 30px;
+margin-top: 40px;
 }
 
-.form2 {
-    display: flex;
-    justify-content: center;
-    gap: 12px;    
+.circle {
+display: flex;
+align-items: center;
+gap: 7px
+}
+.arrow {
+display: flex;
+align-items: start  ;
 }
 
 .input {
     width: 204px;
 }
 
-.buttonForm1 {
-    width: 175px;
-}
-
-.buttonForm2 {
+.button {
     width: 362px;
-} 
-
-
-.container {
-    display: flex;
-    justify-content: center;
-    margin-top: 90px;
-}
-
-.arrow {
-    margin: auto 0;
 }

@@ -4,15 +4,27 @@ import style from './sorting-page.module.css'
 import { Column } from "../ui/column/column";
 import { Button } from "../ui/button/button";
 import { RadioInput } from "../ui/radio-input/radio-input";
-
 import { Direction } from "../../types/direction";
-import { swap } from "../../constants/swap";
+
 import { DELAY_IN_MS, delay } from "../../constants/delays";
+import { ElementStates } from "../../types/element-states";
+
+type TLetter = {
+  value: number;
+  state: ElementStates;
+}
 
 export const SortingPage: React.FC = () => {
-  const [arrNumbers, setArrNumbers] = useState<number[]>([])
+  const [arrNumbers, setArrNumbers] = useState<TLetter[]>([])
   const [bubble, setBubble] = useState(false)
   const [choice, setChoice] = useState(true)
+
+  const swap = (arr: TLetter[], firstIndex: number, secondIndex: number) => {
+    // const newArr = [...arr]; // создаем новый массив, чтобы избежать мутации исходного массива
+    const temp = arr[firstIndex];
+    arr[firstIndex] = arr[secondIndex];
+    arr[secondIndex] = temp;
+  };
 
   const onchangeChoice = () => {
     setChoice(true)
@@ -36,11 +48,14 @@ const descending = () => {
 }
 
 const createNewArray = () => {
-  const numbers: number[] = []
+  const numbers: TLetter[] = []
   const lengthArr = Math.floor(Math.random() * 14) + 3;
 
   for(let i = 0; i < lengthArr; i++) {
-    numbers[i] = Math.floor(Math.random() * 100) + 1;
+    numbers[i] = {
+      value: Math.floor(Math.random() * 100) + 1,
+      state: ElementStates.Default,
+    };
   }
   setArrNumbers(numbers)
 }
@@ -49,62 +64,150 @@ useEffect(() => {
   createNewArray()
 }, [])
 
-const sortQuickApp = async (arr: number[]): Promise<void> => {
-  
+const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
   for(let i = 0; i < arr.length; i++) {
     let minIndex = i
     for(let j = i + 1; j < arr.length; j++) {
-      if(arr[i] > arr[j]) {
+      arr.forEach(async (element) => {
+        if(element.state === ElementStates.Changing){
+          element.state = ElementStates.Default;
+          setArrNumbers([...arr]);
+          await delay(1000)
+        }
+      });
+      console.log(i, j)
+      arr[i].state = ElementStates.Changing
+      arr[j].state = ElementStates.Changing
+      setArrNumbers([...arr])
+      await delay(DELAY_IN_MS)
+      if(arr[minIndex].value > arr[j].value) {    
         minIndex = j
-        swap(arr, i, minIndex)
       } 
     }
-    await delay(DELAY_IN_MS)
-    setArrNumbers([...arr])
+    console.log(i, minIndex)
+    swap(arr, i, minIndex);
+        setArrNumbers([...arr])
+        await delay(1000)
+    arr[i].state = ElementStates.Modified
   } 
+  setArrNumbers([...arr])
 }
 
-const sortQuickDown = async (arr: number[]): Promise<void> => {
-  
+// arr[j].state = ElementStates.Default
+// setArrNumbers([...arr])
+// await delay(DELAY_IN_MS)
+const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
   for(let i = 0; i < arr.length; i++) {
-    let maxIndex = i
+    let minIndex = i
     for(let j = i + 1; j < arr.length; j++) {
-      if(arr[i] < arr[j]) {
-        maxIndex = j
-        swap(arr, i, maxIndex)
+      arr.forEach(async (element) => {
+        if(element.state === ElementStates.Changing){
+          element.state = ElementStates.Default;
+          setArrNumbers([...arr]);
+          await delay(1000)
+        }
+      });
+      console.log(i, j)
+      arr[i].state = ElementStates.Changing
+      arr[j].state = ElementStates.Changing
+      setArrNumbers([...arr])
+      await delay(DELAY_IN_MS)
+      if(arr[minIndex].value < arr[j].value) {    
+        minIndex = j
       } 
     }
-    await delay(DELAY_IN_MS)
-    setArrNumbers([...arr])
+    console.log(i, minIndex)
+    swap(arr, i, minIndex);
+        setArrNumbers([...arr])
+        await delay(1000)
+    arr[i].state = ElementStates.Modified
   } 
+  setArrNumbers([...arr])
 }
-
-const sortBubbleApp = async (arr: number[]): Promise<void> => {
+const sortBubbleApp = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
+
     for (let j = 0; j < arr.length - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
+      console.log(j, j + 1)
+      arr.forEach(async (element) => {
+        if(element.state === ElementStates.Changing){
+          element.state = ElementStates.Default;
+          setArrNumbers([...arr]);
+          await delay(1000)
+        }
+      });
+
+
+      arr[j].state = ElementStates.Changing
+      arr[j + 1].state = ElementStates.Changing
+      setArrNumbers([...arr]);
+      await delay(1000)
+      
+      
+      if (arr[j].value > arr[j + 1].value) {
         swap(arr, j, j + 1); 
-        await delay(DELAY_IN_MS)
         setArrNumbers([...arr]);
-      }
+        await delay(1000)
+      } 
+
+      
     }
+    arr[arr.length - i - 1].state = ElementStates.Modified;
+    setArrNumbers([...arr]);
     
   }
-}
-
-const sortBubbleDown = async (arr: number[]): Promise<void> => {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr.length - i - 1; j++) {
-      if (arr[j] < arr[j + 1]) {
-        swap(arr, j, j + 1); 
-        await delay(DELAY_IN_MS)
-        setArrNumbers([...arr]);
-      }
+  arr.forEach((element) => {
+    if(element.state !== ElementStates.Modified){
+      element.state = ElementStates.Modified;
+      setArrNumbers([...arr]);
     }
-    
-  }
-
+  });
 };
+
+
+const sortBubbleDown = async (arr: TLetter[]): Promise<void> => {
+  for (let i = 0; i < arr.length; i++) {
+
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      console.log(j, j + 1)
+      arr.forEach(async (element) => {
+        if(element.state === ElementStates.Changing){
+          element.state = ElementStates.Default;
+          setArrNumbers([...arr]);
+          await delay(1000)
+        }
+      });
+
+
+      arr[j].state = ElementStates.Changing
+      arr[j + 1].state = ElementStates.Changing
+      setArrNumbers([...arr]);
+      await delay(1000)
+      
+      
+      if (arr[j].value < arr[j + 1].value) {
+        swap(arr, j, j + 1); 
+        setArrNumbers([...arr]);
+        await delay(1000)
+      } 
+
+      
+    }
+    arr[arr.length - i - 1].state = ElementStates.Modified;
+    setArrNumbers([...arr]);
+    
+  }
+  arr.forEach((element) => {
+    if(element.state !== ElementStates.Modified){
+      element.state = ElementStates.Modified;
+      setArrNumbers([...arr]);
+    }
+  });
+};
+
+// arr[j].state = ElementStates.Default
+// setArrNumbers([...arr])
+// await delay(DELAY_IN_MS)
 
 const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
@@ -126,9 +229,9 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         <Button text="Новый массив" extraClass={style.button} onClick={createNewArray} />
       </form>
       <div className={style.container} >
-        {arrNumbers.map((num, index) => {
+        {arrNumbers.map((elm, index) => {
           return (
-            <Column index={num} extraClass={style.column} key={index}/>
+            <Column index={elm.value} extraClass={style.column} key={index} state={elm.state} />
           )
         })} 
       </div>

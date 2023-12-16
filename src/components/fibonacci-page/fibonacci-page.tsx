@@ -4,6 +4,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import style from './fibonacci-page.module.css'
 import { Circle } from "../ui/circle/circle";
+import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
   const [arrFibo, setArrFibo] = useState<number[]>([]);
@@ -18,10 +19,13 @@ export const FibonacciPage: React.FC = () => {
     e.preventDefault();
     const num = parseInt(value);
     getFibonacci(num);
+    setValue('')
   }
 
-  const getFibonacci = (num: number) => {
+  const getFibonacci = async (num: number) => {
     const arrResult: number[] = [1];
+    setArrFibo([...arrResult]);
+    await delay(SHORT_DELAY_IN_MS)
     let a = 0;
     let b = 1;
 
@@ -30,35 +34,22 @@ export const FibonacciPage: React.FC = () => {
       a = b;
       b = c;
       arrResult.push(c);
+      setArrFibo([...arrResult]);
+      await delay(SHORT_DELAY_IN_MS)
     }
 
-    setArrFibo(arrResult);
+    setArrFibo([...arrResult]);
   }
 
-  useEffect(() => {
-    let currentIndex = 0;
-
-    const timer = setInterval(() => {
-      if (currentIndex <= arrFibo.length) {
-        const itemsToShow = arrFibo.slice(0, currentIndex + 1);
-        setDisplayedElements(itemsToShow);
-        currentIndex += 1;
-      } else {
-        clearInterval(timer);
-      }
-    }, 500);
-
-    return () => clearInterval(timer);
-  }, [arrFibo]);
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <form className={style.form} onSubmit={onClick}>
         <Input extraClass={style.input} placeholder="Введите текст" max={19} isLimitText={true} type="number" value={value} onChange={onChange}/>
-        <Button text="Рассчитать" type='submit'/>
+        <Button text="Рассчитать" type='submit' disabled={value && parseInt(value) < 20 && parseInt(value) > -1 ? false : true} />
       </form>
       <div className={style.container}>
-        {displayedElements.map((elm, index) => (
+        {arrFibo.map((elm, index) => (
           <React.Fragment key={index}>
             <Circle index={index} letter={String(elm)} extraClass={style.circle} />
           </React.Fragment>
