@@ -9,7 +9,7 @@ import { SHORT_DELAY_IN_MS, delay } from "../../constants/delays";
 export const FibonacciPage: React.FC = () => {
   const [arrFibo, setArrFibo] = useState<number[]>([]);
   const [value, setValue] = useState('');
-  const [displayedElements, setDisplayedElements] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
@@ -23,6 +23,7 @@ export const FibonacciPage: React.FC = () => {
   }
 
   const getFibonacci = async (num: number) => {
+    setIsLoading(true)
     const arrResult: number[] = [1];
     setArrFibo([...arrResult]);
     await delay(SHORT_DELAY_IN_MS)
@@ -39,6 +40,7 @@ export const FibonacciPage: React.FC = () => {
     }
 
     setArrFibo([...arrResult]);
+    setIsLoading(false)
   }
 
 
@@ -46,7 +48,7 @@ export const FibonacciPage: React.FC = () => {
     <SolutionLayout title="Последовательность Фибоначчи">
       <form className={style.form} onSubmit={onClick}>
         <Input extraClass={style.input} placeholder="Введите текст" max={19} isLimitText={true} type="number" value={value} onChange={onChange}/>
-        <Button text="Рассчитать" type='submit' disabled={value && parseInt(value) < 20 && parseInt(value) > -1 ? false : true} />
+        <Button text="Рассчитать" type='submit' disabled={value && parseInt(value) < 20 && parseInt(value) > -1 ? false : true}  isLoader={isLoading} />
       </form>
       <div className={style.container}>
         {arrFibo.map((elm, index) => (

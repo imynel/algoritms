@@ -15,6 +15,7 @@ type TLetter = {
 export const StringComponent: React.FC = () => {
   const [value, setValue] = useState('')
   const [arrString, setArrString] = useState<TLetter[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const swap = (arr: TLetter[], firstIndex: number, secondIndex: number): TLetter[] => {
     const newArr = [...arr]; // создаем новый массив, чтобы избежать мутации исходного массива
@@ -41,7 +42,8 @@ export const StringComponent: React.FC = () => {
     
 
   const sortArr = async (arr: TLetter[], start = 0, end = arr.length - 1): Promise<void> => {
-    
+    setIsLoading(true)
+
     for(let i = 0; i < arr.length; i++) {
       setArrString([...arr])
       await delay(DELAY_IN_MS);
@@ -62,6 +64,7 @@ export const StringComponent: React.FC = () => {
     }
 
     setArrString([...arr])
+    setIsLoading(false)
   }
 
   // const color: TColor = true ?  '#D252E1' : '#7FE051'
@@ -70,7 +73,7 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title="Строка">
       <form className={style.form} onSubmit={onSubmit}>
         <Input extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
-        <Button text="Развернуть" type='submit' disabled={!value ? true : false}/>
+        <Button text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
       </form>
 
       <div className={style.container}>

@@ -18,6 +18,8 @@ export const SortingPage: React.FC = () => {
   const [arrNumbers, setArrNumbers] = useState<TLetter[]>([])
   const [bubble, setBubble] = useState(false)
   const [choice, setChoice] = useState(true)
+  const [isLoadingUp, setIsLoadingUp] = useState(false)
+  const [isLoadingDown, setIsLoadingDown] = useState(false)
 
   const swap = (arr: TLetter[], firstIndex: number, secondIndex: number) => {
     // const newArr = [...arr]; // создаем новый массив, чтобы избежать мутации исходного массива
@@ -37,12 +39,14 @@ export const SortingPage: React.FC = () => {
   }
 
 const ascending = () => {
+  setIsLoadingUp(true)
   if (choice) sortQuickApp(arrNumbers)
   else sortBubbleApp(arrNumbers)
   
 } 
 
 const descending = () => {
+  setIsLoadingDown(true)
   if (bubble) sortBubbleDown(arrNumbers)
   else sortQuickDown(arrNumbers)
 }
@@ -91,11 +95,9 @@ const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
     arr[i].state = ElementStates.Modified
   } 
   setArrNumbers([...arr])
+  setIsLoadingUp(false)
 }
 
-// arr[j].state = ElementStates.Default
-// setArrNumbers([...arr])
-// await delay(DELAY_IN_MS)
 const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
   for(let i = 0; i < arr.length; i++) {
     let minIndex = i
@@ -123,6 +125,7 @@ const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
     arr[i].state = ElementStates.Modified
   } 
   setArrNumbers([...arr])
+  setIsLoadingDown(false)
 }
 const sortBubbleApp = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
@@ -162,6 +165,7 @@ const sortBubbleApp = async (arr: TLetter[]): Promise<void> => {
       setArrNumbers([...arr]);
     }
   });
+  setIsLoadingUp(false)
 };
 
 
@@ -203,6 +207,7 @@ const sortBubbleDown = async (arr: TLetter[]): Promise<void> => {
       setArrNumbers([...arr]);
     }
   });
+  setIsLoadingDown(false)
 };
 
 // arr[j].state = ElementStates.Default
@@ -223,10 +228,10 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           <RadioInput label="Пузырёк" name="choice" checked={bubble} onChange={onchangeBubble} />
         </div>
         <div className={style.buttons}>
-          <Button sorting={Direction.Ascending} text="По возрастанию" onClick={ascending} type="submit"/>
-          <Button sorting={Direction.Descending} text="По убыванию" onClick={descending} />
+          <Button sorting={Direction.Ascending} text="По возрастанию" onClick={ascending} type="submit" isLoader={isLoadingUp} disabled={isLoadingDown || isLoadingUp}/>
+          <Button sorting={Direction.Descending} text="По убыванию" onClick={descending} isLoader={isLoadingDown} disabled={isLoadingDown || isLoadingUp}/>
         </div>
-        <Button text="Новый массив" extraClass={style.button} onClick={createNewArray} />
+        <Button text="Новый массив" extraClass={style.button} onClick={createNewArray} disabled={isLoadingDown || isLoadingUp} />
       </form>
       <div className={style.container} >
         {arrNumbers.map((elm, index) => {
