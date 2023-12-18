@@ -17,6 +17,8 @@ export const QueuePage: React.FC = () => {
   const [arrResult, setArrResult] = useState<TLetter[]>([])
   const [value, setValue] = useState('')
   const [queue, setQueue] = useState<Queue>(new Queue());
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false)
+  const [isLoadingDel, setIsLoadingDel] = useState(false)
    
   useEffect(() => {
     setArrResult([...queue.getArray()])
@@ -32,6 +34,7 @@ export const QueuePage: React.FC = () => {
   }
 
   const addValue = async () => {
+    setIsLoadingAdd(true)
     queue.enqueue({value: value, state: ElementStates.Changing})
     setValue('')
     setArrResult([...queue.getArray()])
@@ -40,9 +43,11 @@ export const QueuePage: React.FC = () => {
     queue.getArray()[queue.tail - 1].state = ElementStates.Default;
     setArrResult([...queue.getArray()]);
     await delay(SHORT_DELAY_IN_MS)
+    setIsLoadingAdd(false)
   }
 
   const deleteValue = async () => {
+    setIsLoadingDel(true)
     queue.getArray()[queue.head].state = ElementStates.Changing;
     setArrResult([...queue.getArray()]);
     await delay(SHORT_DELAY_IN_MS)
@@ -50,14 +55,15 @@ export const QueuePage: React.FC = () => {
     queue.dequeue()
     await delay(SHORT_DELAY_IN_MS)
     setArrResult([...queue.getArray()])
+    setIsLoadingDel(false)
   }
 
   return (
     <SolutionLayout title="Очередь">
       <div className={style.form}>
         <Input type="text" maxLength={4} placeholder="Введите текст" extraClass={style.input} onChange={onChange} isLimitText={true} value={value} />
-        <Button text="Добавить" type="button" onClick={addValue} disabled={value && queue.tail < 7 ? false : true} />
-        <Button text="Удалить" type="button" onClick={deleteValue}  disabled={arrResult.length !== 0 ? false : true} />
+        <Button text="Добавить" type="button" onClick={addValue} disabled={value && queue.tail < 7 ? false : true} isLoader={isLoadingAdd} />
+        <Button text="Удалить" type="button" onClick={deleteValue}  disabled={arrResult.length !== 0 ? false : true} isLoader={isLoadingDel} />
         <Button text="Очистить" type="button" onClick={deletArray} disabled={arrResult.length !== 0 ? false : true} extraClass={style.clear} />
       </div>
       <div className={style.container}>
