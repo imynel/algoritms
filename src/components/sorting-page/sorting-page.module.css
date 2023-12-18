@@ -1,0 +1,33 @@
+.form {
+    display: flex;
+    margin: 0 122px; 
+    justify-content: space-between;
+    margin-bottom: 48px;
+}
+
+.container {
+ display: flex;
+ justify-content: center;
+ gap: 10px;
+ 
+}
+
+.column {
+    margin-top: auto;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    /* margin-right: auto; */
+} 
+
+.buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* .button {
+    margin-left: 80px;
+} */
