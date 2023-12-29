@@ -14,7 +14,6 @@ export class Stack<T> {
 
     push(item: TLetter) {
         this.arrResult.push(item)
-        console.log(this.arrResult)
     }
 
     pop() {

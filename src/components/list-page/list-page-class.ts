@@ -157,6 +157,5 @@ print() {
     res += `${curr.value} `;
     curr = curr.next;
   }
-  console.log(res);
 }
 }

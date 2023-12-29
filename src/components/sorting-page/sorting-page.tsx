@@ -79,7 +79,6 @@ const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
           await delay(1000)
         }
       });
-      console.log(i, j)
       arr[i].state = ElementStates.Changing
       arr[j].state = ElementStates.Changing
       setArrNumbers([...arr])
@@ -88,7 +87,6 @@ const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
         minIndex = j
       } 
     }
-    console.log(i, minIndex)
     swap(arr, i, minIndex);
         setArrNumbers([...arr])
         await delay(1000)
@@ -109,7 +107,6 @@ const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
           await delay(1000)
         }
       });
-      console.log(i, j)
       arr[i].state = ElementStates.Changing
       arr[j].state = ElementStates.Changing
       setArrNumbers([...arr])
@@ -118,7 +115,7 @@ const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
         minIndex = j
       } 
     }
-    console.log(i, minIndex)
+
     swap(arr, i, minIndex);
         setArrNumbers([...arr])
         await delay(1000)
@@ -131,7 +128,6 @@ const sortBubbleApp = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
 
     for (let j = 0; j < arr.length - i - 1; j++) {
-      console.log(j, j + 1)
       arr.forEach(async (element) => {
         if(element.state === ElementStates.Changing){
           element.state = ElementStates.Default;
@@ -173,7 +169,6 @@ const sortBubbleDown = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
 
     for (let j = 0; j < arr.length - i - 1; j++) {
-      console.log(j, j + 1)
       arr.forEach(async (element) => {
         if(element.state === ElementStates.Changing){
           element.state = ElementStates.Default;

@@ -35,7 +35,6 @@ export const StringComponent: React.FC = () => {
       value: value,
       state: ElementStates.Default
     }))
-    console.log(letters)
     sortArr(letters)
     setValue('')
   }
@@ -56,7 +55,6 @@ export const StringComponent: React.FC = () => {
       arr[start].state = ElementStates.Modified
       arr[end].state = ElementStates.Modified
       await delay(DELAY_IN_MS);
-      console.log(arr, start, end)
       start++
       end--
       
@@ -73,7 +71,7 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title="Строка">
       <form className={style.form} onSubmit={onSubmit}>
         <Input extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
-        <Button text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
+        <Button data-testid="button" text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
       </form>
 
       <div className={style.container}>
