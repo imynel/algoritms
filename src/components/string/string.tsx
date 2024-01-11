@@ -57,8 +57,6 @@ export const StringComponent: React.FC = () => {
       await delay(DELAY_IN_MS);
       start++
       end--
-      
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
     setArrString([...arr])
@@ -70,16 +68,16 @@ export const StringComponent: React.FC = () => {
   return (
     <SolutionLayout title="Строка">
       <form className={style.form} onSubmit={onSubmit}>
-        <Input extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
+        <Input data-testid='input' extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
         <Button data-testid="button" text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
       </form>
 
-      <div className={style.container}>
+      <div className={style.container} data-testid="arrString-container">
         {arrString.map((elm, index) => {
           return (
-            <React.Fragment key={index}>
+            <div key={index} data-testid='arrValue' >
               <Circle letter={elm.value} state={elm.state}/>
-            </React.Fragment>
+            </div>
           )
         })}
       </div>

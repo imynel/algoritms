@@ -223,12 +223,12 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           <RadioInput label="Пузырёк" name="choice" checked={bubble} onChange={onchangeBubble} />
         </div>
         <div className={style.buttons}>
-          <Button sorting={Direction.Ascending} text="По возрастанию" onClick={ascending} type="submit" isLoader={isLoadingUp} disabled={isLoadingDown || isLoadingUp}/>
+          <Button sorting={Direction.Ascending} data-testid='button' text="По возрастанию" onClick={ascending} type="submit" isLoader={isLoadingUp} disabled={isLoadingDown || isLoadingUp}/>
           <Button sorting={Direction.Descending} text="По убыванию" onClick={descending} isLoader={isLoadingDown} disabled={isLoadingDown || isLoadingUp}/>
         </div>
         <Button text="Новый массив" extraClass={style.button} onClick={createNewArray} disabled={isLoadingDown || isLoadingUp} />
       </form>
-      <div className={style.container} >
+      <div className={style.container} data-testid='arrElm' >
         {arrNumbers.map((elm, index) => {
           return (
             <Column index={elm.value} extraClass={style.column} key={index} state={elm.state} />
