@@ -66,17 +66,17 @@ export const StringComponent: React.FC = () => {
   // const color: TColor = true ?  '#D252E1' : '#7FE051'
 
   return (
-    <SolutionLayout title="Строка">
+    <SolutionLayout title="Строка" >
       <form className={style.form} onSubmit={onSubmit}>
-        <Input data-testid='input' extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
-        <Button data-testid="button" text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
+        <Input data-cy='input' data-testid='input' extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
+        <Button data-cy='button' data-testid="button" text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
       </form>
 
-      <div className={style.container} data-testid="arrString-container">
+      <div className={style.container} data-testid="arrString-container" >
         {arrString.map((elm, index) => {
           return (
-            <div key={index} data-testid='arrValue' >
-              <Circle letter={elm.value} state={elm.state}/>
+            <div key={index} data-testid='arrValue' data-cy='circle' >
+              <Circle letter={elm.value} state={elm.state} />
             </div>
           )
         })}

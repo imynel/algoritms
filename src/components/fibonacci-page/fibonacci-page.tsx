@@ -47,13 +47,13 @@ export const FibonacciPage: React.FC = () => {
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <form className={style.form} onSubmit={onClick}>
-        <Input extraClass={style.input} placeholder="Введите текст" max={19} isLimitText={true} type="number" value={value} onChange={onChange}/>
-        <Button text="Рассчитать" type='submit' disabled={value && parseInt(value) < 20 && parseInt(value) > -1 ? false : true}  isLoader={isLoading} />
+        <Input data-cy='input' extraClass={style.input} placeholder="Введите текст" max={19} isLimitText={true} type="number" value={value} onChange={onChange}/>
+        <Button data-cy='button' text="Рассчитать" type='submit' disabled={value && parseInt(value) < 20 && parseInt(value) > -1 ? false : true}  isLoader={isLoading} />
       </form>
       <div className={style.container}>
         {arrFibo.map((elm, index) => (
           <React.Fragment key={index}>
-            <Circle index={index} letter={String(elm)} extraClass={style.circle} />
+            <Circle index={index} letter={String(elm)} extraClass={style.circle} data-cy='circle'/>
           </React.Fragment>
         ))}
       </div>

@@ -18,7 +18,7 @@ function App() {
           <Route path="/" exact>
             <MainPage />
           </Route>
-          <Route path="/recursion">
+          <Route path="/recursion" >
             <StringComponent />
           </Route>
           <Route path="/fibonacci">
