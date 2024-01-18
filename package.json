@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
-    "cypress": "^13.6.2",
+    "cypress": "^13.6.3",
     "eslint-plugin-cypress": "^2.15.1"
   }
 }
