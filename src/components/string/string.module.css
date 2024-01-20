@@ -1,0 +1,16 @@
+.form {
+    display: flex;
+    justify-content: center;
+}
+
+.input {
+    max-width: 380px;
+    margin-right: 12px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 120px 0 0 0 ;
+}

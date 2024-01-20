@@ -1,0 +1,43 @@
+.form1{
+    display: flex;
+    justify-content: start;
+    gap: 30px;
+    margin-left: 300px;
+  }
+  
+.form2{
+display: flex;
+justify-content: start;
+gap: 30px;
+margin-top: 30px;
+margin-left: 300px;
+}
+  
+.container {
+max-width: 1040px;
+align-items: center;
+margin: auto;
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 30px;
+margin-top: 40px;
+}
+
+.circle {
+display: flex;
+align-items: center;
+gap: 7px
+}
+.arrow {
+display: flex;
+align-items: start  ;
+}
+
+.input {
+    width: 204px;
+}
+
+.button {
+    width: 362px;
+}
