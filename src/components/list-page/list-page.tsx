@@ -247,16 +247,16 @@ export const ListPage: React.FC = () => {
     <SolutionLayout title="Связный список">
       <div className={styles.section}>
         <div className={styles.form1}>
-          <Input placeholder='Введите значение' extraClass={styles.input} width={300} name='valueInput' isLimitText max={4} maxLength={4} onChange={handleChange} value={values.valueInput} disabled={buttonsState.valueInput.disabled}/>
-          <Button text="Добавить в head" onClick={addElementHead}  disabled={values.valueInput === '' || buttonsState.addHead.disabled} isLoader={buttonsState.addHead.isLoader}/>
-          <Button text="Добавить в tail"  onClick={addElementTail} disabled={values.valueInput === '' || buttonsState.addTail.disabled} isLoader={buttonsState.addTail.isLoader}/>
-          <Button text="Удалить из head"  onClick={deleteElementHead}  disabled={buttonsState.deleteHead.disabled || linkedList.toArray().length === 0} isLoader={buttonsState.deleteHead.isLoader}/>
-          <Button text="Удалить из tail"  onClick={deleteElementTail} disabled={buttonsState.deleteTail.disabled || linkedList.toArray().length === 0} isLoader={buttonsState.deleteTail.isLoader}/>
+          <Input data-cy='valueInput' placeholder='Введите значение' extraClass={styles.input} width={300} name='valueInput' isLimitText max={4} maxLength={4} onChange={handleChange} value={values.valueInput} disabled={buttonsState.valueInput.disabled}/>
+          <Button data-cy='addHeadButton' text="Добавить в head" onClick={addElementHead}  disabled={values.valueInput === '' || buttonsState.addHead.disabled} isLoader={buttonsState.addHead.isLoader}/>
+          <Button data-cy='addTailButton' text="Добавить в tail"  onClick={addElementTail} disabled={values.valueInput === '' || buttonsState.addTail.disabled} isLoader={buttonsState.addTail.isLoader}/>
+          <Button data-cy='deleteHeadButton' text="Удалить из head"  onClick={deleteElementHead}  disabled={buttonsState.deleteHead.disabled || linkedList.toArray().length === 0} isLoader={buttonsState.deleteHead.isLoader}/>
+          <Button  data-cy='deleteTailButton'text="Удалить из tail"  onClick={deleteElementTail} disabled={buttonsState.deleteTail.disabled || linkedList.toArray().length === 0} isLoader={buttonsState.deleteTail.isLoader}/>
         </div>
         <div className={styles.form2}>
-          <Input placeholder="Введите индекс" extraClass={styles.input} width={300} type="number"  name='indexInput' onChange={handleChange} value={values.indexInput} disabled={buttonsState.indexInput.disabled}/>
-          <Button text="Добавить по индексу" extraClass={styles.button} onClick={addElementByIndex} isLoader={buttonsState.addAt.isLoader} disabled={parseInt(values.indexInput) > linkedList.toArray().length -1 || !values.indexInput}/>
-          <Button text="Удалить по индексу" extraClass={styles.button}  onClick={deleteElementByIndex}  isLoader={buttonsState.deleteAt.isLoader} disabled={parseInt(values.indexInput) > linkedList.toArray().length -1 || !values.indexInput}/>
+          <Input data-cy='indexInput' placeholder="Введите индекс" extraClass={styles.input} width={300} type="number"  name='indexInput' onChange={handleChange} value={values.indexInput} disabled={buttonsState.indexInput.disabled}/>
+          <Button data-cy='addIndexButton' text="Добавить по индексу" extraClass={styles.button} onClick={addElementByIndex} isLoader={buttonsState.addAt.isLoader} disabled={parseInt(values.indexInput) > linkedList.toArray().length -1 || !values.indexInput}/>
+          <Button data-cy='deleteIndexButton' text="Удалить по индексу" extraClass={styles.button}  onClick={deleteElementByIndex}  isLoader={buttonsState.deleteAt.isLoader} disabled={parseInt(values.indexInput) > linkedList.toArray().length -1 || !values.indexInput}/>
         </div>
       </div>
       <div className={styles.container}>
