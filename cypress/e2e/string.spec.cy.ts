@@ -2,7 +2,7 @@ import { input, button, circle } from '../../src/constants/test'
 describe('test string', () => {
 
   beforeEach(function() {
-    cy.visit('http://localhost:3000/recursion');
+    cy.visit('recursion');
   });
   
   it('input value null => button = disabled', () => {

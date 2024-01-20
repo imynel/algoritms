@@ -14,7 +14,11 @@ type TLetter = {
   state: ElementStates;
 }
 
-export const SortingPage: React.FC = () => {
+interface IProps {
+  arrLength?: number
+}
+
+export const SortingPage: React.FC <IProps> = ( {arrLength}: IProps ) => {
   const [arrNumbers, setArrNumbers] = useState<TLetter[]>([])
   const [bubble, setBubble] = useState(false)
   const [choice, setChoice] = useState(true)
@@ -40,7 +44,7 @@ export const SortingPage: React.FC = () => {
 
 const ascending = () => {
   setIsLoadingUp(true)
-  if (choice) sortQuickApp(arrNumbers)
+  if (choice) sortQuickApp(arrNumbers, arrLength || 10)
   else sortBubbleApp(arrNumbers)
   
 } 
@@ -68,33 +72,33 @@ useEffect(() => {
   createNewArray()
 }, [])
 
-const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
-  for(let i = 0; i < arr.length; i++) {
-    let minIndex = i
-    for(let j = i + 1; j < arr.length; j++) {
+const sortQuickApp = async (arr: TLetter[], length: number): Promise<void> => {
+  for (let i = 0; i < length; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < length; j++) {
       arr.forEach(async (element) => {
-        if(element.state === ElementStates.Changing){
+        if (element.state === ElementStates.Changing) {
           element.state = ElementStates.Default;
           setArrNumbers([...arr]);
-          await delay(1000)
+          await delay(1000);
         }
       });
-      arr[i].state = ElementStates.Changing
-      arr[j].state = ElementStates.Changing
-      setArrNumbers([...arr])
-      await delay(DELAY_IN_MS)
-      if(arr[minIndex].value > arr[j].value) {    
-        minIndex = j
-      } 
+      arr[i].state = ElementStates.Changing;
+      arr[j].state = ElementStates.Changing;
+      setArrNumbers([...arr]);
+      await delay(DELAY_IN_MS);
+      if (arr[minIndex].value > arr[j].value) {
+        minIndex = j;
+      }
     }
     swap(arr, i, minIndex);
-        setArrNumbers([...arr])
-        await delay(1000)
-    arr[i].state = ElementStates.Modified
-  } 
-  setArrNumbers([...arr])
-  setIsLoadingUp(false)
-}
+    setArrNumbers([...arr]);
+    await delay(1000);
+    arr[i].state = ElementStates.Modified;
+  }
+  setArrNumbers([...arr]);
+  setIsLoadingUp(false);
+};
 
 const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
   for(let i = 0; i < arr.length; i++) {

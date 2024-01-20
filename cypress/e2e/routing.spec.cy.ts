@@ -9,7 +9,7 @@ describe('test routing', () => {
   ]
 
   beforeEach(function() {
-      cy.visit('http://localhost:3000');
+      cy.visit('/');
     });
 
     routes.forEach(route => {

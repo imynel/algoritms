@@ -2,7 +2,7 @@ import { input, button, circle } from '../../src/constants/test'
 
 describe('test queue', () => {
   beforeEach(function() {
-    cy.visit('http://localhost:3000/queue');
+    cy.visit('queue');
   });
   
   it('input value null => button = disabled', () => {

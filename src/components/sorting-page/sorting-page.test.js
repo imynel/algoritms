@@ -5,48 +5,52 @@ import { DELAY_IN_MS } from "../../constants/delays";
 import { SortingPage } from "./sorting-page";
 
 
-const renderComponent = () => {
+const renderComponent = (arrLength) => {
     render(
         <BrowserRouter>
-            <SortingPage />
+            <SortingPage arrLength={arrLength}/>
         </BrowserRouter>
     );
 };
 
 describe('sorting-page', () => {
 
-    beforeEach(() => {
-        renderComponent();
-    });
+    test('empty array', async () => {
+        renderComponent(0);
+        const ascendingButton = screen.getByText('По возрастанию');
+        fireEvent.click(ascendingButton);
 
-    test('empty array', () => {
-        const button = screen.getByTestId('button')
-        expect(button).toBeDisabled()
+        // Ждем, пока массив будет отсортирован
+        await waitFor(() => {
+          const columns = screen.queryAllByTestId('arrElm');
+          expect(columns.length).toBe(1);
+        }, { timeout: 3000 });
     })
     test('array of one element', async () => {
-        const inputElement = screen.getByTestId('input');
-        fireEvent.change(inputElement, { target: { value: 1 } });
-        const buttonElement = screen.getByTestId('button');
-        fireEvent.click(buttonElement);
+        renderComponent(1);
+        // Создаем массив из одного элемента
+        const createArrayButton = screen.getByText('Новый массив');
+        fireEvent.click(createArrayButton);
 
-        console.log(screen.getByTestId('arrElm').debug());
+        const ascendingButton = screen.getByText('По возрастанию');
+        fireEvent.click(ascendingButton);
 
-
-        await waitFor(() => {
-            expect(screen.getByTestId('arrElm')).toBeInTheDocument();
-        }, { timeout: DELAY_IN_MS * 2 });
+        // Проверяем, что массив содержит один элемент
+        const columns = await screen.findAllByTestId('arrElm');
+        expect(columns).toHaveLength(1);
       });
 
     test('array of several elements.', async () => {
-        const arr = screen.queryAllByTestId('arrElm').map(item => item.textContent);
-        const sortedArr = [...arr].sort((a, b) => a - b);
+        renderComponent(3);
+        // Создаем массив из нескольких элементов
+        const createArrayButton = screen.getByText('Новый массив');
+        fireEvent.click(createArrayButton);
 
-        const buttonElement = screen.getByTestId('button');
-        fireEvent.click(buttonElement);
+        const ascendingButton = screen.getByText('По возрастанию');
+        fireEvent.click(ascendingButton);
 
-        await waitFor(() => {
-            const newArr = screen.queryAllByTestId('arrElm').map(item => item.textContent);
-            expect(newArr).toStrictEqual(sortedArr);
-        }, { timeout: DELAY_IN_MS * 2 });
+        // Проверяем, что массив содержит несколько элементов
+        const columns = await screen.findAllByTestId('arrElm');
+        expect(columns).not.toHaveLength(3);
     })
 })

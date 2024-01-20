@@ -2,7 +2,7 @@ import { button, circle, input } from "../../src/constants/test";
 
 describe('template spec', () => {
   beforeEach(function() {
-    cy.visit('http://localhost:3000/stack');
+    cy.visit('stack');
   });
   
   it('input value null => button = disabled', () => {

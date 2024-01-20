@@ -3,7 +3,7 @@ import { input, button, circle } from '../../src/constants/test'
 describe('test fibonacci', () => {
 
   beforeEach(function() {
-    cy.visit('http://localhost:3000/fibonacci');
+    cy.visit('fibonacci');
   });
 
   it('input value null => button = disabled', () => {
