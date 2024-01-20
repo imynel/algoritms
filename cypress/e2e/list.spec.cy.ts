@@ -23,17 +23,61 @@ describe('test list', () => {
   })
 
   it('add element in head', () => {
-    cy.get('[data-cy="valueInput"]').type('123')
+    cy.get('[data-cy="valueInput"]').type('111')
     cy.get('[data-cy="addHeadButton"]').click()
 
-    cy.wait(1500)
-    cy.get(circle).should('have.length', 5)
+    cy.get(circle).first().should('have.text', '111')
   })
 
-  it('ghj', () => {
-    const a = cy.get(circle).length
+  it('add element in tail', () => {
+    cy.get('[data-cy="valueInput"]').type('222');
+    cy.get('[data-cy="addTailButton"]').click();
+  
+    cy.get(circle).last().should('have.text', '222')
+    });
 
-    if(a === cy.get(circle).length) cy.get(circle).should('exist')
+  it('add element in index', () => {
+    const index = 3
+    cy.get('[data-cy="valueInput"]').type('333');
+    cy.get('[data-cy="indexInput"]').type(index);
+    cy.get('[data-cy="addIndexButton"]').click();
+
+    cy.wait(3500)
+    cy.get(circle).eq(index).should('have.text', '333')
   })
 
+    it('delete element in head', () => {
+    cy.get('[data-cy="valueInput"]').type('444')
+    
+
+    cy.get(circle).eq(0).then((elm) => {
+      cy.get('[data-cy="addHeadButton"]').click()
+      cy.get(circle).eq(0).should('not.have.text', elm.text())
+    })
+
+  })
+
+  it('delete element in tail', () => {
+    cy.get('[data-cy="valueInput"]').type('555')
+    
+
+    cy.get(circle).last().then((elm) => {
+      cy.get('[data-cy="addTailButton"]').click()
+      cy.get(circle).last().should('not.have.text', elm.text())
+    })
+
+  })
+
+  it('delete element in index', () => {
+    const index = 3
+    cy.get('[data-cy="valueInput"]').type('666')
+    cy.get('[data-cy="indexInput"]').type(index)
+    
+
+    cy.get(circle).eq(index).then((elm) => {
+      cy.get('[data-cy="addHeadButton"]').click()
+      cy.get(circle).eq(index).should('not.have.text', elm.text())
+    })
+  })
+  
 })
