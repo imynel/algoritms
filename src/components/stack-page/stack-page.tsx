@@ -64,10 +64,10 @@ export const StackPage: React.FC = () => {
   return (
     <SolutionLayout title="Стек">
       <div className={style.form}>
-        <Input type="text" maxLength={4} placeholder="Введите текст" extraClass={style.input} onChange={onChange} isLimitText={true} value={value} />
-        <Button text="Добавить" type="button" onClick={addValue} disabled={!value ? true : false} isLoader={isLoadingAdd} />
-        <Button text="Удалить" type="button" onClick={deleteValue} disabled={arrResult.length !== 0 ? false : true} isLoader={isLoadingDel}/>
-        <Button text="Очистить" type="button" onClick={deletArray} disabled={arrResult.length !== 0 ? false : true} extraClass={style.clear} />
+        <Input data-cy='input' type="text" maxLength={4} placeholder="Введите текст" extraClass={style.input} onChange={onChange} isLimitText={true} value={value} />
+        <Button data-cy='button' text="Добавить" type="button" onClick={addValue} disabled={!value ? true : false} isLoader={isLoadingAdd} />
+        <Button data-cy='deletButton' text="Удалить" type="button" onClick={deleteValue} disabled={arrResult.length !== 0 ? false : true} isLoader={isLoadingDel}/>
+        <Button data-cy='clearButton' text="Очистить" type="button" onClick={deletArray} disabled={arrResult.length !== 0 ? false : true} extraClass={style.clear} />
       </div>
       <div className={style.container}>
         {arrResult.map((elm, index) => {

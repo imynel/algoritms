@@ -35,7 +35,6 @@ export const StringComponent: React.FC = () => {
       value: value,
       state: ElementStates.Default
     }))
-    console.log(letters)
     sortArr(letters)
     setValue('')
   }
@@ -56,11 +55,8 @@ export const StringComponent: React.FC = () => {
       arr[start].state = ElementStates.Modified
       arr[end].state = ElementStates.Modified
       await delay(DELAY_IN_MS);
-      console.log(arr, start, end)
       start++
       end--
-      
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
     setArrString([...arr])
@@ -70,18 +66,18 @@ export const StringComponent: React.FC = () => {
   // const color: TColor = true ?  '#D252E1' : '#7FE051'
 
   return (
-    <SolutionLayout title="Строка">
+    <SolutionLayout title="Строка" >
       <form className={style.form} onSubmit={onSubmit}>
-        <Input extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
-        <Button text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
+        <Input data-cy='input' data-testid='input' extraClass={style.input} placeholder="Введите текст" maxLength={11} isLimitText={true} type="text" value={value} onChange={onChange} />
+        <Button data-cy='button' data-testid="button" text="Развернуть" type='submit' disabled={!value ? true : false} isLoader={isLoading} />
       </form>
 
-      <div className={style.container}>
+      <div className={style.container} data-testid="arrString-container" >
         {arrString.map((elm, index) => {
           return (
-            <React.Fragment key={index}>
-              <Circle letter={elm.value} state={elm.state}/>
-            </React.Fragment>
+            <div key={index} data-testid='arrValue' data-cy='circle' >
+              <Circle letter={elm.value} state={elm.state} />
+            </div>
           )
         })}
       </div>

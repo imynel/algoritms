@@ -14,7 +14,11 @@ type TLetter = {
   state: ElementStates;
 }
 
-export const SortingPage: React.FC = () => {
+interface IProps {
+  arrLength?: number
+}
+
+export const SortingPage: React.FC <IProps> = ( {arrLength}: IProps ) => {
   const [arrNumbers, setArrNumbers] = useState<TLetter[]>([])
   const [bubble, setBubble] = useState(false)
   const [choice, setChoice] = useState(true)
@@ -40,7 +44,7 @@ export const SortingPage: React.FC = () => {
 
 const ascending = () => {
   setIsLoadingUp(true)
-  if (choice) sortQuickApp(arrNumbers)
+  if (choice) sortQuickApp(arrNumbers, arrLength || 10)
   else sortBubbleApp(arrNumbers)
   
 } 
@@ -68,35 +72,33 @@ useEffect(() => {
   createNewArray()
 }, [])
 
-const sortQuickApp = async (arr: TLetter[]): Promise<void> => {
-  for(let i = 0; i < arr.length; i++) {
-    let minIndex = i
-    for(let j = i + 1; j < arr.length; j++) {
+const sortQuickApp = async (arr: TLetter[], length: number): Promise<void> => {
+  for (let i = 0; i < length; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < length; j++) {
       arr.forEach(async (element) => {
-        if(element.state === ElementStates.Changing){
+        if (element.state === ElementStates.Changing) {
           element.state = ElementStates.Default;
           setArrNumbers([...arr]);
-          await delay(1000)
+          await delay(1000);
         }
       });
-      console.log(i, j)
-      arr[i].state = ElementStates.Changing
-      arr[j].state = ElementStates.Changing
-      setArrNumbers([...arr])
-      await delay(DELAY_IN_MS)
-      if(arr[minIndex].value > arr[j].value) {    
-        minIndex = j
-      } 
+      arr[i].state = ElementStates.Changing;
+      arr[j].state = ElementStates.Changing;
+      setArrNumbers([...arr]);
+      await delay(DELAY_IN_MS);
+      if (arr[minIndex].value > arr[j].value) {
+        minIndex = j;
+      }
     }
-    console.log(i, minIndex)
     swap(arr, i, minIndex);
-        setArrNumbers([...arr])
-        await delay(1000)
-    arr[i].state = ElementStates.Modified
-  } 
-  setArrNumbers([...arr])
-  setIsLoadingUp(false)
-}
+    setArrNumbers([...arr]);
+    await delay(1000);
+    arr[i].state = ElementStates.Modified;
+  }
+  setArrNumbers([...arr]);
+  setIsLoadingUp(false);
+};
 
 const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
   for(let i = 0; i < arr.length; i++) {
@@ -109,7 +111,6 @@ const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
           await delay(1000)
         }
       });
-      console.log(i, j)
       arr[i].state = ElementStates.Changing
       arr[j].state = ElementStates.Changing
       setArrNumbers([...arr])
@@ -118,7 +119,7 @@ const sortQuickDown = async (arr: TLetter[]): Promise<void> => {
         minIndex = j
       } 
     }
-    console.log(i, minIndex)
+
     swap(arr, i, minIndex);
         setArrNumbers([...arr])
         await delay(1000)
@@ -131,7 +132,6 @@ const sortBubbleApp = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
 
     for (let j = 0; j < arr.length - i - 1; j++) {
-      console.log(j, j + 1)
       arr.forEach(async (element) => {
         if(element.state === ElementStates.Changing){
           element.state = ElementStates.Default;
@@ -173,7 +173,6 @@ const sortBubbleDown = async (arr: TLetter[]): Promise<void> => {
   for (let i = 0; i < arr.length; i++) {
 
     for (let j = 0; j < arr.length - i - 1; j++) {
-      console.log(j, j + 1)
       arr.forEach(async (element) => {
         if(element.state === ElementStates.Changing){
           element.state = ElementStates.Default;
@@ -228,12 +227,12 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           <RadioInput label="Пузырёк" name="choice" checked={bubble} onChange={onchangeBubble} />
         </div>
         <div className={style.buttons}>
-          <Button sorting={Direction.Ascending} text="По возрастанию" onClick={ascending} type="submit" isLoader={isLoadingUp} disabled={isLoadingDown || isLoadingUp}/>
+          <Button sorting={Direction.Ascending} data-testid='button' text="По возрастанию" onClick={ascending} type="submit" isLoader={isLoadingUp} disabled={isLoadingDown || isLoadingUp}/>
           <Button sorting={Direction.Descending} text="По убыванию" onClick={descending} isLoader={isLoadingDown} disabled={isLoadingDown || isLoadingUp}/>
         </div>
         <Button text="Новый массив" extraClass={style.button} onClick={createNewArray} disabled={isLoadingDown || isLoadingUp} />
       </form>
-      <div className={style.container} >
+      <div className={style.container} data-testid='arrElm' >
         {arrNumbers.map((elm, index) => {
           return (
             <Column index={elm.value} extraClass={style.column} key={index} state={elm.state} />
