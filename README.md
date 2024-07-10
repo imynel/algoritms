@@ -1,4 +1,4 @@
-Ссылка на проект - <https://imynel.github.io/algoritms/>
+Ссылка на проект - <https://algoritms.vercel.app/>
 
 # Проектная работа. МБОУ АЛГОСОШ им. Фибоначчи
 
